@@ -1,0 +1,139 @@
+### MotoPart API — example requests (IntelliJ HTTP client)
+@base = http://localhost:8080/motopart/public
+@adminToken = JHFGFSFDFDAH$#EAFGHQFYVSHWKJSGSFWVGVKUSHHGSJGVHGFWHCCSNBGCXC
+
+### 1. App registration
+POST {{base}}/application
+Content-Type: application/json
+
+{ "deviceId": "abc123", "osInfo": "Android 13", "modelInfo": "Pixel 7", "clientVersion": "1.0.4", "deviceToken": "fcm-xyz" }
+
+### 2. Get locations
+GET {{base}}/user
+
+### 3. Signup
+POST {{base}}/user
+Content-Type: application/json
+
+{ "userEmail": "a@b.com", "type": "1", "userPhone": "9876543210", "userName": "Riyas", "appId": "1", "locationId": "1", "locationName": "Malappuram", "doc1": "", "doc2": "", "profileUrl": "" }
+
+### 4. Generate OTP
+POST {{base}}/otp
+Content-Type: application/json
+
+{ "userPhone": "9876543210", "appId": "1", "key": "k" }
+
+### 5. Login (use the OTP returned by step 4)
+POST {{base}}/login
+Content-Type: application/json
+
+{ "userPhone": "9876543210", "appId": "1", "otp": "1234" }
+
+### 6. Types
+GET {{base}}/type
+
+### 7. Years
+GET {{base}}/year
+
+### 8. Create year (admin)
+POST {{base}}/year
+Content-Type: application/json
+token: {{adminToken}}
+
+{ "type": "1", "id": "", "year": "2024" }
+
+### 9. Makers
+GET {{base}}/makers
+
+### 10. Create maker(s) (admin) — single or array both work
+POST {{base}}/makers
+Content-Type: application/json
+token: {{adminToken}}
+
+{ "type": "1", "id": "", "url": "", "makersname": "Nissan" }
+
+### 11. Models
+GET {{base}}/model?makersId=1&appId=1&start=0&count=25
+
+### 12. Create model(s) (admin)
+POST {{base}}/model
+Content-Type: application/json
+token: {{adminToken}}
+
+{ "action": "add", "type": "1", "id": "", "url": "", "modelname": "Altima", "makerid": "1", "year": "2024" }
+
+### 13. Parts
+GET {{base}}/parts?makersId=1&modelId=1&year=2020&start=0&count=25
+
+### 14. Create part(s) (admin)
+POST {{base}}/parts
+Content-Type: application/json
+token: {{adminToken}}
+
+{ "action": "add", "type": "1", "id": "", "url": "", "partname": "Mirror", "makerid": "1", "year": "2020", "modelid": "1", "partdec": "Side mirror" }
+
+### 15. Subparts
+GET {{base}}/subpart?makersId=1&modelId=1&year=2020&partId=1&start=0&count=25
+
+### 16. Create subpart(s) (admin)
+POST {{base}}/subpart
+Content-Type: application/json
+token: {{adminToken}}
+
+{ "action": "add", "type": "1", "id": "", "url": "", "subpartname": "Glass", "makerid": "1", "year": "2020", "modelid": "1", "partid": "1", "subpartdec": "Mirror glass" }
+
+### 17. Get posts (filtered)
+GET {{base}}/post?start=0&count=200
+
+### 18. Create posts (array). Headers appid/token/userId
+POST {{base}}/post
+Content-Type: application/json
+appid: 1
+token: usertoken
+userId: 1
+
+[ { "userId": "1", "condition": "used", "type": "1", "year": "2020", "makerId": "1", "modelId": "1", "partId": "1", "subpartId": "1", "usage": "low", "tittle": "Used brake pad", "description": "good condition", "price": "500", "img1": "", "img2": "", "img3": "", "img4": "", "img5": "nil", "img6": "nil", "status": 1, "partNumber": "PN-001", "sellBuy": 0, "city": "Malappuram" } ]
+
+### 19. Search
+GET {{base}}/search?search=brake
+
+### 20. Suggestions
+GET {{base}}/suggession?suggession=bra
+
+### 21. Custom ads
+GET {{base}}/customad?type=-1
+
+### 22. Create custom ad (admin)
+POST {{base}}/customad
+Content-Type: application/json
+token: {{adminToken}}
+
+{ "type": "1", "adurl": "https://example.com/a.jpg", "status": "1", "id": "", "outurl": "https://example.com" }
+
+### 23. All users
+GET {{base}}/upload
+
+### 24. Admin post control (array)
+POST {{base}}/adminpost
+Content-Type: application/json
+token: {{adminToken}}
+
+[ { "type": "1", "postid": "1", "status": "0" } ]
+
+### 25. Clear data (admin)
+PUT {{base}}/cleardata/1
+Content-Type: application/json
+token: {{adminToken}}
+
+{ }
+
+### 26. Image upload (multipart, field name "profile")
+POST {{base}}/upload
+Content-Type: multipart/form-data; boundary=BOUND
+
+--BOUND
+Content-Disposition: form-data; name="profile"; filename="test.jpg"
+Content-Type: image/jpeg
+
+< ./test.jpg
+--BOUND--

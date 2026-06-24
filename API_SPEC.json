@@ -1,0 +1,211 @@
+{
+  "service": "MotoPart Cloud API",
+  "baseUrl": "https://dev.motopart.org/motopart/public/",
+  "uploadUrl": "https://dev.motopart.org/motopart/public/upload",
+  "commonHeaders": {
+    "Accept": "application/json",
+    "Content-type": "application/json"
+  },
+  "postCreationHeaders": ["appid", "token", "userId"],
+  "adminHeaders": {
+    "phoneid": 1,
+    "appid": 1,
+    "token": "<admin-token>",
+    "userId": 9875,
+    "Access-Control-Allow-Origin": "*"
+  },
+  "responseEnvelope": {
+    "Response": {
+      "Status": { "statusMessage": "string", "statusCode": "int (20001 = success)" },
+      "Data": "object | array | string (varies per endpoint)"
+    },
+    "successHttpStatus": 201
+  },
+  "endpoints": [
+    {
+      "name": "appRegistration",
+      "method": "POST",
+      "path": "application",
+      "request": { "deviceId": "string", "osInfo": "string", "modelInfo": "string", "clientVersion": "string", "deviceToken": "string" },
+      "responseData": { "appId": "string" }
+    },
+    {
+      "name": "getLocations",
+      "method": "GET",
+      "path": "user",
+      "responseData": [ { "id": "string", "location_name": "string" } ]
+    },
+    {
+      "name": "signup",
+      "method": "POST",
+      "path": "user",
+      "request": { "userEmail": "string", "type": "string", "userPhone": "string", "userName": "string", "appId": "string", "locationId": "string", "locationName": "string", "doc1": "string", "doc2": "string", "profileUrl": "string" },
+      "responseData": { "token": "string", "userId": "string", "userType": "string", "emailId": "string", "userName": "string", "locName": "string", "profileUrl": "string" }
+    },
+    {
+      "name": "generateOtp",
+      "method": "POST",
+      "path": "otp",
+      "request": { "userPhone": "string", "appId": "string", "key": "string" },
+      "responseData": "string (message)"
+    },
+    {
+      "name": "login",
+      "method": "POST",
+      "path": "login",
+      "request": { "userPhone": "string", "appId": "string", "otp": "string" },
+      "responseData": { "token": "string", "userId": "string", "userType": "string", "emailId": "string", "userName": "string", "locId": "string", "locName": "string", "profileUrl": "string" }
+    },
+    {
+      "name": "getTypes",
+      "method": "GET",
+      "path": "type",
+      "responseData": [ { "id": "string", "type_name": "string", "createdAt": "string" } ]
+    },
+    {
+      "name": "getYears",
+      "method": "GET",
+      "path": "year",
+      "responseData": [ { "id": "string", "year": "string", "arabic": "string", "createdAt": "string" } ]
+    },
+    {
+      "name": "createYear",
+      "method": "POST",
+      "path": "year",
+      "auth": "admin",
+      "request": { "type": "string", "id": "string", "year": "string" }
+    },
+    {
+      "name": "getMakers",
+      "method": "GET",
+      "path": "makers",
+      "responseData": [ { "id": "string", "maker_name": "string", "maker_image_url": "string", "createdAt": "string" } ]
+    },
+    {
+      "name": "createMaker",
+      "method": "POST",
+      "path": "makers",
+      "auth": "admin",
+      "note": "accepts single object or array",
+      "request": { "type": "string", "id": "string", "url": "string", "makersname": "string" }
+    },
+    {
+      "name": "getModels",
+      "method": "GET",
+      "path": "model",
+      "queryParams": { "makersId": "string", "appId": "string", "start": 0, "count": 25 },
+      "responseData": [ { "id": "string", "type": "string", "year": "string", "maker_id": "string", "model_name": "string", "model_image_url": "string", "createdAt": "string" } ]
+    },
+    {
+      "name": "createModel",
+      "method": "POST",
+      "path": "model",
+      "auth": "admin",
+      "note": "accepts single object or array",
+      "request": { "action": "string", "type": "string", "id": "string", "url": "string", "modelname": "string", "makerid": "string", "year": "string" }
+    },
+    {
+      "name": "getParts",
+      "method": "GET",
+      "path": "parts",
+      "queryParams": { "makersId": "string", "modelId": "string", "year": "string", "start": 0, "count": 25 },
+      "responseData": [ { "id": "string", "type": "string", "year": "string", "maker_id": "string", "model_id": "string", "part_name": "string", "part_image_url": "string", "part_description": "string", "createdAt": "string" } ]
+    },
+    {
+      "name": "createPart",
+      "method": "POST",
+      "path": "parts",
+      "auth": "admin",
+      "note": "accepts single object or array",
+      "request": { "action": "string", "type": "string", "id": "string", "url": "string", "partname": "string", "makerid": "string", "year": "string", "modelid": "string", "partdec": "string" }
+    },
+    {
+      "name": "getSubParts",
+      "method": "GET",
+      "path": "subpart",
+      "queryParams": { "makersId": "string", "modelId": "string", "year": "string", "partId": "string", "start": 0, "count": 25 },
+      "responseData": [ { "id": "string", "type": "string", "year": "string", "maker_id": "string", "model_id": "string", "part_id": "string", "subpart_name": "string", "subpart_image_url": "string", "description": "string", "createdAt": "string" } ]
+    },
+    {
+      "name": "createSubPart",
+      "method": "POST",
+      "path": "subpart",
+      "auth": "admin",
+      "note": "accepts single object or array",
+      "request": { "action": "string", "type": "string", "id": "string", "url": "string", "subpartname": "string", "makerid": "string", "year": "string", "modelid": "string", "partid": "string", "subpartdec": "string" }
+    },
+    {
+      "name": "getPosts",
+      "method": "GET",
+      "path": "post",
+      "queryParams": { "makerId": "string (optional)", "type": "string (optional, omit if '0')", "modelId": "string (optional)", "year": "string (optional)", "partId": "string (optional)", "subpartId": "string (optional)", "itemCondition": "string (optional)", "location": "string (optional)", "userid": "int (optional, >0)", "start": 0, "count": 200 },
+      "responseData": [ { "id": "string", "status": "string", "type": "string", "year": "string", "maker_id": "string", "model_id": "string", "part_id": "string", "subpart_id": "string", "part_number": "string", "item_tittle": "string", "item_usage": "string", "item_condition": "string", "item_description": "string", "image_url_1": "string", "image_url_2": "string", "image_url_3": "string", "image_url_4": "string", "image_url_5": "string", "image_url_6": "string", "user_type": "string", "user_id": "string", "user_name": "string", "location_id": "string", "location": "string", "createdAt": "string", "lastUpdated": "string", "price": "string", "phone_number": "string", "maker_name": "string", "model_name": "string", "part_name": "string", "subpart_name": "string" } ]
+    },
+    {
+      "name": "createPosts",
+      "method": "POST",
+      "path": "post",
+      "auth": "postCreation",
+      "note": "body is an ARRAY of post objects",
+      "request": [ { "userId": "string", "condition": "string", "type": "string", "year": "string", "makerId": "string", "modelId": "string", "partId": "string", "subpartId": "string", "usage": "string", "tittle": "string", "description": "string", "price": "string", "img1": "string", "img2": "string", "img3": "string", "img4": "string", "img5": "string", "img6": "string", "status": 1, "partNumber": "string", "sellBuy": 0, "city": "string" } ],
+      "responseData": { "postId": "string" }
+    },
+    {
+      "name": "search",
+      "method": "GET",
+      "path": "search",
+      "queryParams": { "search": "string" },
+      "responseData": "array of post items (same shape as getPosts)"
+    },
+    {
+      "name": "suggestions",
+      "method": "GET",
+      "path": "suggession",
+      "queryParams": { "suggession": "string" },
+      "responseData": [ { "id": "string", "search": "string" } ]
+    },
+    {
+      "name": "getCustomAds",
+      "method": "GET",
+      "path": "customad",
+      "queryParams": { "type": -1 },
+      "responseData": [ { "id": "string", "adurl": "string", "status": "string", "outurl": "string" } ]
+    },
+    {
+      "name": "createCustomAd",
+      "method": "POST",
+      "path": "customad",
+      "auth": "admin",
+      "request": { "type": "string", "adurl": "string", "status": "string", "id": "string", "outurl": "string" }
+    },
+    {
+      "name": "getAllUsersData",
+      "method": "GET",
+      "path": "upload?",
+      "responseData": [ { "id": "string", "username": "string", "mobile": "string", "hide_phone_number": "string", "email": "string", "locationid": "string", "location": "string", "type": "string", "doc1": "string", "doc2": "string", "profileurl": "string", "status": "string", "createdAt": "string", "lastUpdated": "string" } ]
+    },
+    {
+      "name": "adminPostControl",
+      "method": "POST",
+      "path": "adminpost",
+      "auth": "admin",
+      "note": "body is an ARRAY",
+      "request": [ { "type": "string", "postid": "string", "status": "string" } ]
+    },
+    {
+      "name": "clearData",
+      "method": "PUT",
+      "path": "cleardata/1",
+      "auth": "admin",
+      "request": "ClearData object (structure not fully defined in cloud layer)"
+    },
+    {
+      "name": "imageUpload",
+      "method": "POST",
+      "path": "upload",
+      "contentType": "multipart/form-data",
+      "note": "form field name is 'profile'; response is NOT wrapped in Response envelope",
+      "responseData": { "url": "string" }
+    }
+  ]
+}
